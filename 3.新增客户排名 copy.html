@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/4.8.0/echarts.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.min.js"></script>
+    <style>
+        body {
+            background-color: #eee;
+        }
+        #box {
+            width: 600px;
+            height: 480px;
+            background-color: #fff;
+        }
+        #box h3 {
+            padding-top: 20px;
+            text-indent: 20px;
+            font-weight: normal;
+            font-size: 16px;
+        }
+        #box h3 span {
+            font-size: 12px;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="box">
+        <h3>新增客户数排名 <span>Y轴：人数 X轴：负责人</span></h3>
+        <div id="main" style="width: 600px;height:400px;">
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        async function a() {
+            let result = await axios.get('https://www.fastmock.site/mock/4f60d566644d6646e94d679ea86f9287/aixue8/echars-info')
+
+            let resdata = result.data.result.data.new_ranking;
+            let employeeNames = resdata.map(item => item.employee_name)
+            let employeeNum = resdata.map(item => item.num)
+
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+
+            // 指定图表的配置项和数据
+            var option = {
+                toolbox: {
+                    feature: {
+                        saveAsImage: {
+                            type: 'png'
+                        },
+                        restore: {
+                            show:true
+                        }
+                    },
+                    right: 60,
+                    top: 0
+                },
+                dataZoom: {
+                    type: 'slider',
+                    start: 0,
+                    end: 40,
+                    bottom: 0
+                },
+                grid: {
+                    top: 40
+                },
+                tooltip: {},
+                legend: {
+                    show:false,
+                    data: ['销量']
+                },
+                xAxis: {
+                    data: employeeNames
+                },
+                yAxis: {},
+                series: [{
+                    name: '销量',
+                    type: 'bar',
+                    data: employeeNum
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+
+        }
+        
+        a()
+
+
+
+
+    </script>
+</body>
+
+</html>

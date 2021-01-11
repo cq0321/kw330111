@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/4.8.0/echarts.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.min.js"></script>
+</head>
+
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+
+        axios.get('https://www.fastmock.site/mock/4f60d566644d6646e94d679ea86f9287/aixue8/echars-info')
+            .then(res => {
+                console.log(res.data.result.data.new_ranking);
+                let resdata = res.data.result.data.new_ranking;
+                // var employeeNames = [];
+                // resdata.forEach(item => {
+                //     employeeNames.push(item.employee_name)
+                // });
+                // console.log(employeeNames);
+
+                let employeeNames = resdata.map(item => item.employee_name)
+                let employeeNum = resdata.map(item => item.num)
+                console.log(employeeNames, employeeNum);
+                myChart(employeeNames, employeeNum)
+
+            })
+
+
+
+        function myChart(employeeNames, employeeNum) {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '新增客户数排名'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['销量']
+                },
+                xAxis: {
+                    data: employeeNames
+                },
+                yAxis: {},
+                series: [{
+                    name: '销量',
+                    type: 'bar',
+                    data: employeeNum
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+        </script>
+</body>
+
+</html>

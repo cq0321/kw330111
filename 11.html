@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var obj1 = new Object();
+        obj1.name = 'jack';
+        obj1.run = function () {
+            return this.name + '运行中...';
+        }
+        console.log(obj1.run()); // 
+
+        var obj2 = obj1; // 得到obj1的引用
+        obj2.name = 'lucy'; // 直接改变了name属性
+        console.log(obj2.run());
+        console.log(obj1.run()); // 用 obj1.run()发现name也改变了
+
+
+        var obj2 = new Object();; 
+        obj2.name = 'lucy'; 
+        console.log(obj2.run());
+        console.log(obj1.run()); // 这样才避免和obj1混淆，从而保持独立
+
+    </script>
+</body>
+
+</html>
